@@ -1,38 +1,87 @@
-Role Name
+dc-redmine
 =========
 
-A brief description of the role goes here.
+Install redmine (based on Redmine)
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+none
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```
+# common settings
+dc_redmine_timezone: Asia/Tokyo
+
+# redmine settings
+dc_redmine_redmine_port: 10083
+dc_redmine_redmine_https: false
+dc_redmine_redmine_relative_url_root: 
+dc_redmine_redmine_secret_token:
+dc_redmine_redmine_sudo_mode_enabled: false
+dc_redmine_redmine_sudo_mode_timeout: 15
+dc_redmine_redmine_concurrent_uploads: 2
+dc_redmine_redmine_backup_schedule:
+dc_redmine_redmine_backup_expiry:
+dc_redmine_redmine_backup_time:
+
+# smtp settings
+dc_redmine_smtp_enabled: false
+dc_redmine_smtp_method: smtp
+dc_redmine_smtp_domain: www.example.com
+dc_redmine_smtp_host: smtp.gmail.com
+dc_redmine_smtp_port: 587
+dc_redmine_smtp_user: mailer@example.com
+dc_redmine_smtp_pass: password
+dc_redmine_smtp_starttls: true
+dc_redmine_smtp_authentication: :login
+
+# imap settings
+dc_redmine_imap_enabled: false
+dc_redmine_imap_host: imap.gmail.com
+dc_redmine_imap_port: 993
+dc_redmine_imap_user: mailer@example.com
+dc_redmine_imap_pass: password
+dc_redmine_imap_ssl: true
+dc_redmine_imap_interval: 30
+
+# database settings
+dc_redmine_db_adapter: postgresql
+dc_redmine_db_host: postgresql
+dc_redmine_db_port: 5432
+dc_redmine_db_user: redmine
+dc_redmine_db_pass: password
+dc_redmine_db_name: redmine_production
+
+# reverse proxy settings
+dc_redmine_domains: 'redmine.example.com -> http://redmine'
+dc_redmine_stage: production
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+[douhashi/ansible-role-docker-compose](https://github.com/douhashi/ansible-role-docker-compose)
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```
+- hosts: servers
+  roles:
+    - dc-redmine
+```
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+[Sho DOUHASHI](https://github.com/douhashi)
+
