@@ -1,2 +1,19 @@
----
-# tasks file for dc-redmine
+- name: create compose dir
+  file: path={{ docker_compose_compose_file_root }}/redmine state=directory
+
+- name: create environment dir
+  file: path={{ docker_compose_environment_file_root }} state=directory
+  become: yes
+
+- name: deploy redmine.env
+  template: src=environment/redmine.env dest={{ docker_compose_environment_file_root }}/redmine.env
+  become: yes
+  notify: restart redmine
+
+- name: deploy docker-compose.yml
+  template: src=compose/docker-compose.yml dest={{ docker_compose_compose_file_root }}/redmine/docker-compose.yml
+  notify: restart redmine
+
+- name: enable dc@redmine.service
+  service: name=dc@redmine enabled=yes
+  become: yes
