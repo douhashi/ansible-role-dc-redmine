@@ -1,2 +1,4 @@
 ---
-# handlers file for dc-redmine
+- name: restart redmine
+  service: name=dc@redmine state=restarted
+  become: yes

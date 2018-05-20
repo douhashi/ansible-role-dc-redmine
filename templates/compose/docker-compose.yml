@@ -1,0 +1,72 @@
+version: '2'
+
+services:
+  postgresql:
+    image: sameersbn/postgresql:9.6-2
+    environment:
+      - DB_USER
+      - DB_PASS
+      - DB_NAME
+    volumes:
+      - /srv/docker/redmine/postgresql:/var/lib/postgresql
+
+  redmine:
+    image: sameersbn/redmine:3.4.4-2
+    depends_on:
+      - postgresql
+    environment:
+      - TZ
+
+      # FIXME: can't connect db with environment
+      - DB_ADAPTER={{ dc_redmine_db_adapter }}
+      - DB_HOST={{ dc_redmine_db_host }}
+      - DB_PORT={{ dc_redmine_db_port }}
+      - DB_USER={{ dc_redmine_db_user }}
+      - DB_PASS={{ dc_redmine_db_pass }}
+      - DB_NAME={{ dc_redmine_db_name }}
+
+      - REDMINE_PORT
+      - REDMINE_HTTPS
+      - REDMINE_RELATIVE_URL_ROOT
+      - REDMINE_SECRET_TOKEN
+
+      - REDMINE_SUDO_MODE_ENABLED
+      - REDMINE_SUDO_MODE_TIMEOUT
+
+      - REDMINE_CONCURRENT_UPLOADS
+
+      - REDMINE_BACKUP_SCHEDULE
+      - REDMINE_BACKUP_EXPIRY
+      - REDMINE_BACKUP_TIME
+
+      - SMTP_ENABLED
+      - SMTP_METHOD
+      - SMTP_DOMAIN
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USER
+      - SMTP_PASS
+      - SMTP_STARTTLS
+      - SMTP_AUTHENTICATION
+
+      - IMAP_ENABLED
+      - IMAP_HOST
+      - IMAP_PORT
+      - IMAP_USER
+      - IMAP_PASS
+      - IMAP_SSL
+      - IMAP_INTERVAL
+
+    volumes:
+      - /srv/docker/redmine/redmine:/home/redmine/data
+
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - '80:80'
+      - '443:443'
+    links:
+      - redmine
+    environment:
+      - DOMAINS
+      - STAGE
