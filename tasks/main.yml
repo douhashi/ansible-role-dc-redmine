@@ -2,7 +2,7 @@
   file: path={{ docker_compose_compose_file_root }}/redmine state=directory
 
 - name: create environment dir
-  file: path={{ docker_compose_environment_file_root }}/redmine state=directory
+  file: path={{ docker_compose_environment_file_root }} state=directory
   become: yes
 
 - name: deploy redmine.env
